@@ -1,18 +1,28 @@
-import { Injectable } from '@nestjs/common';
-
-import { v4 } from 'uuid';
-
-import { Cart } from '../models';
+import { Repository } from 'typeorm';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { CartItemEntity } from '../entities/cartItem.entity';
+import { UserEntity } from 'src/users/entities/user.entity';
+import { ProductEntity } from '../entities/product.entity';
+import { CartStatuses } from '../models';
+import { CartEntity } from '../entities/cart.entity';
 
 @Injectable()
 export class CartService {
-  private userCarts: Record<string, Cart> = {};
+  constructor(
+    @InjectRepository(CartItemEntity)
+    private cartItemsRepository: Repository<CartItemEntity>,
+    @InjectRepository(CartEntity)
+    private cartRepository: Repository<CartEntity>,
+  ) {}
 
-  findByUserId(userId: string): Cart {
+  private userCarts: Record<string, CartEntity> = {};
+
+  async findByUserId(userId: string): Promise<CartEntity> {
     return this.userCarts[ userId ];
   }
 
-  createByUserId(userId: string) {
+  async createByUserId(userId: string) {
     const id = v4();
     const userCart = {
       id,
