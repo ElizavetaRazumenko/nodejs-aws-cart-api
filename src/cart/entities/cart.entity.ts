@@ -1,4 +1,4 @@
-import { UserEntity } from 'src/users/entities/user.entity';
+import { UserEntity } from '../../users/entities/user.entity';
 import {
   Entity,
   Column,
@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 import { CartStatuses } from '../models';
 import { CartItemEntity } from './cartItem.entity';
-import { OrderEntity } from 'src/order/entities/order.entity';
+import { OrderEntity } from '../../order/entities/order.entity';
 
 @Entity('carts')
 export class CartEntity {
