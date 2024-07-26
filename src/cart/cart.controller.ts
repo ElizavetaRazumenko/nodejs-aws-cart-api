@@ -3,7 +3,7 @@ import { DataSource } from 'typeorm';
 import { BasicAuthGuard } from 'src/auth/guards';
 import { UpdateCartDto } from './dto/updateCart.dto';
 import { OrderService } from '../order';
-import { CreateOrderDto } from 'src/order/dtos/create-order.dto';
+import { CreateOrderDto } from 'src/order/dto/create-order.dto';
 import { OrderEntity } from 'src/order/entities/order.entity';
 import { AppRequest, getUserIdFromRequest } from '../shared';
 import { calculateCartTotal } from './models-rules';
