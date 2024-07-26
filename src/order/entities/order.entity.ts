@@ -1,4 +1,3 @@
-import { UserEntity } from '../../users/entities/user.entity';
 import {
   Entity,
   Column,
@@ -7,11 +6,16 @@ import {
   OneToOne,
   JoinColumn,
 } from 'typeorm';
-import { OrderStatus } from '../models';
 import { CartEntity } from 'src/cart/entities/cart.entity';
+import { UserEntity } from '../../users/entities/user.entity';
+import { OrderStatus } from '../models';
 
 @Entity('orders')
 export class OrderEntity {
+  constructor(partialEntity: Partial<OrderEntity>) {
+    Object.assign(this, partialEntity);
+  }
+
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -21,6 +25,7 @@ export class OrderEntity {
   @OneToOne(() => CartEntity, (cart) => cart.order, {
     nullable: false,
   })
+
   @JoinColumn()
   cart: CartEntity;
 

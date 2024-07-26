@@ -1,10 +1,10 @@
-import { Repository } from 'typeorm';
+import { QueryRunner, Repository } from 'typeorm';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CartItemEntity } from '../entities/cartItem.entity';
 import { UserEntity } from '../../users/entities/user.entity';
 import { ProductEntity } from '../entities/product.entity';
-import { CartStatuses } from '../models';
+import { CartStatus } from '../models';
 import { CartEntity } from '../entities/cart.entity';
 
 @Injectable()
@@ -19,7 +19,7 @@ export class CartService {
   async findByUserId(userId: string) {
     return await this.cartRepository.findOne({
       where: {
-        status: CartStatuses.OPEN, user: {
+        status: CartStatus.OPEN, user: {
         id: userId
         } 
       },
@@ -33,7 +33,7 @@ export class CartService {
 
   async createByUserId(userId: string) {
     const cart = this.cartRepository.create({
-      status: CartStatuses.OPEN
+      status: CartStatus.OPEN
     });
 
     cart.user = new UserEntity({
@@ -57,7 +57,7 @@ export class CartService {
   async findOrCreateByUserId(userId: string) {
     const userCart = this.findByUserId(userId);
 
-    return userCart ?? this.createByUserId(userId);
+    return userCart || await this.createByUserId(userId);
   }
 
   async updateByUserId(
@@ -69,17 +69,28 @@ export class CartService {
     if (cartItem.count === 1) {
       const newItem = new CartItemEntity(cartItem);
       const product = new ProductEntity(cartItem.product);
-
       newItem.product = product;
       newItem.cart = cart;
-
+  
       await this.cartItemsRepository.save(newItem);
+    } else if (cartItem.count === 0) {
+      await this.cartItemsRepository.delete({
+        product: {
+          id: cartItem.product.id
+        },
+        cart: {
+          id: cart.id
+        },
+      });
     } else {
       const itemToUpdate = await this.cartItemsRepository.findOne({
         where: {
           product: {
             id: cartItem.product.id
-          }
+          },
+          cart: {
+            id: cart.id
+          },
         },
       });
 
@@ -105,22 +116,41 @@ export class CartService {
     });
   }
 
+  async updateUserCartStatus(
+    queryRunner: QueryRunner,
+    userId: string,
+    status: CartStatus,
+  ) {
+    const userCart = await this.cartRepository.findOne({
+      where: {
+        status: CartStatus.OPEN, user: {
+          id: userId
+        }
+      },
+    });
+
+    if (!userCart) {
+      throw new NotFoundException('Cart not found');
+    }
+
+    userCart.status = status;
+  
+    await queryRunner.manager.getRepository(CartEntity).save(userCart);
+  }
+
   async removeByUserId(userId: string) {
     const userCart = await this.cartRepository.findOne({
       where: {
-        status: CartStatuses.OPEN, user: {
+        status: CartStatus.OPEN, user: {
         id: userId
       }
     },
     });
 
     if (!userCart) {
-      throw new NotFoundException('User cart not found');
+      throw new NotFoundException('Cart not found');
     }
 
-    userCart.status = CartStatuses.ORDERED;
-
-    await this.cartRepository.save(userCart);
+    return await this.cartRepository.remove(userCart);
   }
-
 }

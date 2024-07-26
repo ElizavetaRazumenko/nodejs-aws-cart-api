@@ -12,13 +12,13 @@ export class UsersService {
     private userRepository: Repository<UserEntity>,
   ) {}
 
-  async createOne({ name, password }: User): Promise<User> {
+  async createOne({ name, password }: User) {
     const newUser = this.userRepository.create({
       name, password
     });
-    const savedUser = await this.userRepository.save(newUser);
+    const user = await this.userRepository.save(newUser);
 
-    return savedUser;
+    return user;
   }
 
   async findOne(name: string) {

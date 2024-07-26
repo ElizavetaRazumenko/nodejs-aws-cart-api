@@ -7,8 +7,8 @@ import {
   OneToOne,
   JoinColumn,
 } from 'typeorm';
-import { CartEntity } from './cart.entity';
 import { ProductEntity } from './product.entity';
+import { CartEntity } from './cart.entity';
 
 @Entity('cart_items')
 export class CartItemEntity {
@@ -25,10 +25,9 @@ export class CartItemEntity {
   @ManyToOne(() => CartEntity, (cart) => cart.items, { nullable: false })
   cart: CartEntity;
 
-  @OneToOne(() => ProductEntity, (product) => product.cartItem, {
-    cascade: ['insert', 'remove'],
+  @ManyToOne(() => ProductEntity, (product) => product.cartItem, {
     nullable: false,
+    cascade: ['insert', 'update'],
   })
-  @JoinColumn()
   product: ProductEntity;
 }
