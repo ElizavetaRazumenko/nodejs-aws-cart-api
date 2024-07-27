@@ -1,10 +1,7 @@
 import {
   Entity,
   Column,
-  ManyToOne,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
-  OneToOne,
   OneToMany,
 } from 'typeorm';
 import { CartEntity } from './cart.entity';

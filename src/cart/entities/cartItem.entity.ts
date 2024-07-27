@@ -2,10 +2,7 @@ import {
   Entity,
   Column,
   ManyToOne,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
-  OneToOne,
-  JoinColumn,
 } from 'typeorm';
 import { ProductEntity } from './product.entity';
 import { CartEntity } from './cart.entity';

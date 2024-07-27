@@ -23,8 +23,8 @@ INSERT INTO public.cart_items(
 INSERT INTO public.users(
 	id, name, email, password, created_at)
 	VALUES
-	(DEFAULT, 'User Name', 'username@gmail.com', '54321', DEFAULT),
-	(DEFAULT, 'User Name', 'username@gmail.com', '54321', DEFAULT);
+	('541e3622-139b-4f95-bceb-cde6cf65fc10', 'User First', 'username@gmail.com', '54321', DEFAULT),
+	('f9559b7c-ebd4-4f28-86a2-f68568198d28', 'User Second', 'username@gmail.com', '54321', DEFAULT);
 
 -- Insert into orders table
 INSERT INTO public.orders(
