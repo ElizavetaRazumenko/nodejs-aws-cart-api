@@ -1,3 +1,12 @@
+CREATE TABLE IF NOT EXISTS public.users (
+    id uuid NOT NULL DEFAULT uuid_generate_v4(),
+    name character varying NOT NULL,
+    email character varying,
+    password character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL DEFAULT now(),
+    CONSTRAINT users_pkey PRIMARY KEY (id)
+);
+
 CREATE TABLE IF NOT EXISTS public.carts (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
     user_id uuid NOT NULL,
@@ -56,11 +65,4 @@ CREATE TABLE IF NOT EXISTS public.orders (
         ON DELETE NO ACTION
 );
 
-CREATE TABLE IF NOT EXISTS public.users (
-    id uuid NOT NULL DEFAULT uuid_generate_v4(),
-    name character varying NOT NULL,
-    email character varying,
-    password character varying NOT NULL,
-    created_at timestamp without time zone NOT NULL DEFAULT now(),
-    CONSTRAINT users_pkey PRIMARY KEY (id)
-);
+

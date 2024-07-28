@@ -47,11 +47,11 @@ export class AuthService {
   loginBasic(user: User) {
     function encodeUserToken(user) {
       const { name, password } = user;
-      const buf = Buffer.from([name, password].join(':'), 'utf8');
-
+      const buf = Buffer.from(`${name}:${password}`, 'utf8');
+  
       return buf.toString('base64');
     }
-
+  
     return {
       token_type: 'Basic',
       access_token: encodeUserToken(user),
