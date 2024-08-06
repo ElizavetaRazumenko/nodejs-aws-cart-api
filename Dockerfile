@@ -16,6 +16,9 @@ RUN npm ci
 # Copy the application source code
 COPY --chown=node:node . .
 
+# Copy .env file
+COPY --chown=node:node .env ./
+
 # Switch to non-root user
 USER node
 
@@ -34,6 +37,9 @@ COPY --chown=node:node --from=development /usr/src/app/node_modules ./node_modul
 
 # Copy application source code
 COPY --chown=node:node . .
+
+# Copy .env file
+COPY --chown=node:node .env ./
 
 # Run the build script to generate production-ready code
 RUN npm run build
@@ -54,6 +60,9 @@ FROM --platform=linux/amd64 node:18-alpine as production
 # Copy the built application and dependencies from the build stage
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
+
+# Copy .env file
+COPY --chown=node:node .env ./
 
 # Expose the application port
 EXPOSE 4000

@@ -6,7 +6,6 @@ node_modules
 .eslintrc.js
 .gitignore
 .prettierrc
-.env*
 cart-service
 update-database
 Dockerfile
