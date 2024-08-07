@@ -1,0 +1,10 @@
+dist
+node_modules
+.eslintrc.js
+.gitignore
+.prettierrc
+cart-service
+update-database
+nest-cli.json
+README.md
+test

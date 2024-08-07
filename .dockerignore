@@ -1,0 +1,15 @@
+# docker will create this data by itself
+dist
+node_modules
+
+# redundant data for the docker build
+.eslintrc.js
+.gitignore
+.prettierrc
+cart-service
+update-database
+Dockerfile
+nest-cli.json
+README.md
+test
+.dockerignore
